@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Herman O. — Content Operations & Data Pipelines</title>
+<style>
+  :root{
+    --bg:#0b0c0e; --panel:#111317; --line:#22262e; --ink:#e8eaed;
+    --dim:#9aa3ad; --accent:#c8f26a; --accent-dim:#8fae4b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased; line-height:1.55;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  header{padding:72px 0 56px;border-bottom:1px solid var(--line)}
+  .kicker{
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:22px
+  }
+  h1{font-size:clamp(34px,5.4vw,58px);line-height:1.06;letter-spacing:-.02em;font-weight:640}
+  h1 span{color:var(--dim)}
+  .lede{margin-top:22px;font-size:18px;color:var(--dim);max-width:660px}
+
+  .stats{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
+    margin:44px 0 0;border:1px solid var(--line);border-radius:12px;overflow:hidden
+  }
+  .stat{background:var(--panel);padding:20px 18px}
+  .stat b{display:block;font-size:26px;font-weight:650;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+  .stat small{display:block;margin-top:6px;font-size:11.5px;letter-spacing:.04em;
+    text-transform:uppercase;color:var(--dim)}
+
+  section{padding:64px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);
+     font-weight:600;margin-bottom:32px;font-family:ui-monospace,Menlo,monospace}
+
+  .case{
+    display:grid;grid-template-columns:56px 1fr;gap:0 24px;padding:30px 0;border-top:1px solid var(--line)
+  }
+  .case:first-of-type{border-top:none;padding-top:0}
+  .case .n{font-family:ui-monospace,Menlo,monospace;color:var(--accent-dim);font-size:13px;padding-top:5px}
+  .case h3{font-size:22px;font-weight:620;letter-spacing:-.01em;margin-bottom:10px}
+  .case p{color:var(--dim);max-width:720px}
+  .case ul{margin:14px 0 0;padding-left:18px;color:var(--dim)}
+  .case li{margin:5px 0}
+  .case li::marker{color:var(--accent-dim)}
+  code{
+    font-family:ui-monospace,Menlo,monospace;font-size:12.5px;background:#191c22;
+    border:1px solid var(--line);padding:1px 6px;border-radius:5px;color:#cfd6de
+  }
+
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+  .list{list-style:none}
+  .list li{padding:11px 0;border-bottom:1px solid var(--line);color:var(--dim);font-size:15px}
+  .list li b{color:var(--ink);font-weight:560}
+  .list li:last-child{border-bottom:none}
+
+  .steps{counter-reset:s;display:grid;gap:0}
+  .step{display:grid;grid-template-columns:56px 1fr;gap:0 24px;padding:20px 0;border-top:1px solid var(--line)}
+  .step:first-child{border-top:none}
+  .step .n{font-family:ui-monospace,Menlo,monospace;color:var(--accent-dim);font-size:13px;padding-top:3px}
+  .step h4{font-size:17px;font-weight:600;margin-bottom:6px}
+  .step p{color:var(--dim);font-size:15px}
+
+  .note{
+    background:var(--panel);border:1px solid var(--line);border-left:2px solid var(--accent);
+    border-radius:8px;padding:18px 20px;color:var(--dim);font-size:14.5px;margin-top:28px
+  }
+  .note b{color:var(--ink)}
+
+  footer{padding:48px 0 72px;display:flex;justify-content:space-between;gap:24px;
+    flex-wrap:wrap;color:var(--dim);font-size:14px}
+  footer b{color:var(--ink);font-weight:560}
+  @media(max-width:720px){
+    .stats{grid-template-columns:1fr 1fr}
+    .two{grid-template-columns:1fr}
+    .case,.step{grid-template-columns:1fr}
+    .case .n,.step .n{padding-bottom:8px}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <div class="kicker">Herman O. · Content operations</div>
+    <h1>I build the pipelines that move content and data at volume.<br><span>Fixed price. Fixed date. Async.</span></h1>
+    <p class="lede">
+      Archive it, extract it, cut it, publish it — on a schedule, with a verification pass that refuses
+      to record broken files as done. No calls, no babysitting, no “it should be fine”.
+    </p>
+
+    <div class="stats">
+      <div class="stat"><b>8,710</b><small>posts archived</small></div>
+      <div class="stat"><b>11</b><small>creator accounts</small></div>
+      <div class="stat"><b>daily</b><small>scheduled runs</small></div>
+      <div class="stat"><b>API</b><small>publishing only</small></div>
+    </div>
+  </header>
+
+  <section>
+    <h2>Selected work</h2>
+
+    <div class="case">
+      <div class="n">01</div>
+      <div>
+        <h3>Bulk creator archive — 8,710 posts across 11 accounts</h3>
+        <p>
+          A pipeline that pulls every post from a creator account: video and photo carousels,
+          watermark-free, each post filed with its caption, hashtags, an SEO title and per-slide hashes.
+        </p>
+        <ul>
+          <li>2,631 posts in the largest single account; 11 accounts running on the same code with per-account config.</li>
+          <li>Every file checked for a valid container and readable streams before it is recorded — truncated downloads are rejected and retried, never logged as complete.</li>
+          <li>Daily schedule plus a watchdog that catches any run missed while the machine was offline.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="case">
+      <div class="n">02</div>
+      <div>
+        <h3>Publishing lanes — Instagram + Pinterest through their own APIs</h3>
+        <p>
+          A content library scheduled and published on a fixed daily cadence through the official APIs,
+          with a ledger that records what actually went out versus what was planned.
+        </p>
+        <ul>
+          <li>Per-platform limits respected by design, not discovered by getting blocked.</li>
+          <li>Retry queue for failures; a daily report that names the failures instead of hiding them.</li>
+          <li>Metadata generated per post — title, description, hashtags — so nothing publishes bare.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="case">
+      <div class="n">03</div>
+      <div>
+        <h3>Site build and deploy — structured content in, production out</h3>
+        <p>
+          A static site where the content lives in structured files, a build step renders the pages,
+          and one command pushes to production. Handed over with source and a README.
+        </p>
+        <ul>
+          <li>No CMS licence, no plugin updates, no monthly bill beyond the host.</li>
+          <li>The owner edits a JSON file and runs one command — no developer needed for copy changes.</li>
+          <li>Verified live, not “works on my machine”.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>What this work is.</b> These are systems I built and operate myself. I am new to Upwork and I am
+      not going to invent clients I don’t have — so the first thing I offer is a small paid sample on one
+      item, priced low, before you commit to a batch.
+    </div>
+  </section>
+
+  <section>
+    <h2>What I take on</h2>
+    <div class="two">
+      <ul class="list">
+        <li><b>Scraping &amp; extraction</b> — sites, directories, catalogues into clean CSV/XLSX. You get the script, so you can re-run it yourself.</li>
+        <li><b>Bulk video &amp; carousels</b> — download, index, transcribe, file by post with metadata.</li>
+        <li><b>Repurposing</b> — long video into clips: cuts, 9:16 or 1:1, captions burned in.</li>
+        <li><b>Subtitles</b> — transcribed and timed, SRT or burned in.</li>
+      </ul>
+      <ul class="list">
+        <li><b>API publishing</b> — Pinterest, Instagram, WordPress on a schedule you set.</li>
+        <li><b>Sites &amp; landing pages</b> — built, deployed, handed over with source.</li>
+        <li><b>Spreadsheet work</b> — cleaning, merging, deduping, formatting at volume.</li>
+        <li><b>Documents</b> — PDF, carousel, and deck generation from structured data.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>How I work</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="n">→</div>
+        <div>
+          <h4>You send a written brief</h4>
+          <p>What the output is, how many items, what format. A sample of the target output beats a paragraph describing it.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">→</div>
+        <div>
+          <h4>I quote a fixed price and a date</h4>
+          <p>Not a range. If the brief has an ambiguity that changes the price, you get the question in the first message, not a change order later.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">→</div>
+        <div>
+          <h4>Small paid sample first</h4>
+          <p>One item, delivered before the full batch is funded. If the quality isn’t what you need, we stop there and you’ve lost the price of one item.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">→</div>
+        <div>
+          <h4>Delivery</h4>
+          <p>The files, the script, and a one-page note on what was done and how to run it again. Everything async — you never have to be on a call.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div><b>Herman O.</b> — content operations &amp; data pipelines</div>
+    <div>Available on Upwork · fixed price · async delivery</div>
+  </footer>
+
+</div>
+</body>
+</html>
