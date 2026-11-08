@@ -13,10 +13,30 @@
     --paper: #f6f2ea;
     --ink: #1c1a17;
     --muted: #57514a;
-    --hairline: #d8d0c4;
+    --hairline: #8f8474;
     --rust: #8a3324;
-    --display: "Bricolage Grotesque", "Public Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --display: "Bricolage Grotesque", "Bricolage Grotesque Fallback", "Public Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     --text: "Public Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    --measure: 62ch;
+    --leading: 1.6;
+    --baseline: calc(var(--step-0) * var(--leading));
+
+    --step-0: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
+    --step-1: calc(var(--step-0) * 1.25);
+    --step-2: calc(var(--step-1) * 1.25);
+    --step-3: calc(var(--step-2) * 1.25);
+  }
+
+  /* Fallback metrics: Bricolage's 1.25em line box at roughly 97% of Arial's width. */
+  @font-face {
+    font-family: "Bricolage Grotesque Fallback";
+    src: local("Arial"), local("Helvetica Neue"), local("Liberation Sans");
+    font-display: swap;
+    size-adjust: 97%;
+    ascent-override: 103%;
+    descent-override: 26%;
+    line-gap-override: 0%;
   }
 
   *, *::before, *::after { box-sizing: border-box; }
@@ -32,9 +52,9 @@
     background: var(--paper);
     color: var(--ink);
     font-family: var(--text);
-    font-size: 17px;
+    font-size: var(--step-0);
     font-weight: 400;
-    line-height: 1.65;
+    line-height: var(--leading);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     font-kerning: normal;
@@ -56,32 +76,91 @@
   a:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
 
   .skip-link {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: -9999px;
-    padding: 10px 14px;
+    padding: calc(var(--baseline) * .5) calc(var(--baseline) * .75);
     background: var(--paper);
     color: var(--ink);
-    font-size: 14px;
     font-weight: 600;
-    line-height: 1.4;
     text-decoration: underline;
   }
 
-  .skip-link:focus { top: 16px; left: 16px; z-index: 10; }
+  .skip-link:focus { top: var(--baseline); left: 1.5rem; z-index: 10; }
 
+  /* Three columns: gutter, measure, rail. */
   .page {
-    width: min(680px, calc(100% - 48px));
-    margin-inline: auto;
-    padding: clamp(64px, 9vw, 112px) 0 64px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) min(var(--measure), calc(100% - 3rem)) minmax(0, 1fr);
+    padding-block: calc(var(--baseline) * 2);
   }
 
-  .name {
-    margin: 0;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1.4;
+  .page > * { grid-column: 2; }
+  .page > .bleed { grid-column: 1 / -1; }
+
+  .page > main {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) min(var(--measure), calc(100% - 3rem)) minmax(0, 1fr);
+    grid-template-columns: subgrid;
   }
+
+  main > * { grid-column: 2; }
+
+  .made {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) min(var(--measure), calc(100% - 3rem)) minmax(0, 1fr);
+    grid-template-columns: subgrid;
+  }
+
+  .made > * { grid-column: 2; }
+  .made > .build { grid-column: 1 / -1; }
+
+  .build {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) min(var(--measure), calc(100% - 3rem)) minmax(0, 1fr);
+    grid-template-columns: subgrid;
+  }
+
+  .build > * { grid-column: 2; }
+  .build > .bleed { grid-column: 1 / -1; }
+
+  .archive-figure {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) min(var(--measure), calc(100% - 3rem)) minmax(0, 1fr);
+    grid-template-columns: subgrid;
+    row-gap: var(--baseline);
+  }
+
+  .archive-figure > * {
+    grid-column: 2;
+    margin-block-start: 0;
+  }
+
+  .bleed { grid-column: 1 / -1; }
+
+  @media (min-width: 1000px) {
+    .page > .rail {
+      grid-column: 3;
+      margin-left: 2rem;
+      font-size: calc(var(--step-0) * .875);
+    }
+
+    .archive-figure > .rail {
+      grid-column: 2;
+      grid-row: auto;
+      margin-left: 0;
+      max-width: 46ch;
+      font-size: calc(var(--step-0) * .875);
+    }
+  }
+
+  /* One baseline is the source of every vertical gap. */
+  main * { margin: 0; }
+  main * + * { margin-block-start: var(--baseline); }
+
+  .name { font-weight: 600; }
 
   h1, h2, h3 {
     font-family: var(--display);
@@ -90,42 +169,58 @@
   }
 
   h1 {
-    margin: clamp(38px, 6vw, 58px) 0 0;
-    max-width: 100%;
-    font-size: clamp(31px, 6.2vw, 50px);
+    margin-block-start: calc(var(--baseline) * 2);
+    font-size: var(--step-3);
     line-height: 1.08;
     letter-spacing: -.035em;
     text-wrap: balance;
     font-optical-sizing: auto;
   }
 
-  .intro {
-    margin: 26px 0 0;
-    font-size: 17px;
-    line-height: 1.65;
-    text-wrap: pretty;
-  }
-
-  .short-rule {
-    width: 64px;
-    margin: clamp(48px, 6vw, 64px) 0 0;
-    border: 0;
-    border-top: 1px solid var(--hairline);
-  }
-
-  .section h2,
-  .delivery h2 {
-    margin: 0 0 26px;
-    font-size: clamp(26px, 3.1vw, 30px);
+  h2 {
+    font-size: var(--step-2);
     line-height: 1.18;
     letter-spacing: -.02em;
     text-wrap: balance;
   }
 
-  .what-i-do { padding-top: clamp(28px, 4vw, 36px); }
+  h3 {
+    font-size: var(--step-1);
+    font-weight: 500;
+    line-height: 1.18;
+    letter-spacing: -.015em;
+    text-wrap: balance;
+  }
+
+  .intro {
+    font-size: var(--step-1);
+    line-height: 1.45;
+    max-width: 46ch;
+    text-wrap: pretty;
+  }
+
+  .short-rule {
+    width: 52px;
+    margin-block-start: calc(var(--baseline) * 2);
+    margin-block-end: 0;
+    border: 0;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .what-i-do,
+  .made,
+  .process,
+  .delivery,
+  .closing {
+    margin-block-start: calc(var(--baseline) * 2);
+  }
+
+  .made > h2 {
+    border-top: 0;
+    padding-block-start: 0;
+  }
 
   .services {
-    margin: 0;
     padding: 0;
     list-style: none;
   }
@@ -136,130 +231,92 @@
     text-wrap: pretty;
   }
 
-  .services li + li { margin-top: 12px; }
+  .services li + li { margin-block-start: calc(var(--baseline) * .5); }
 
   .services li::before {
-    content: "—";
+    content: "";
     position: absolute;
     left: 0;
-    top: 0;
-    color: var(--muted);
+    top: .82em;
+    width: .75em;
+    height: 1px;
+    background: var(--muted);
   }
 
-  .made {
-    margin-top: clamp(76px, 10vw, 104px);
-    padding-top: clamp(30px, 4vw, 40px);
-    border-top: 1px solid var(--hairline);
-  }
-
-  .made > h2 { margin-bottom: clamp(34px, 5vw, 48px); }
-
-  .build h3 {
-    margin: 0 0 14px;
-    font-size: clamp(21px, 2.6vw, 23px);
-    font-weight: 600;
-    line-height: 1.3;
-    letter-spacing: -.015em;
-  }
-
-  .build p {
-    margin: 0;
-    text-wrap: pretty;
-  }
-
-  .build + .build { margin-top: clamp(44px, 6vw, 58px); }
-
-  .archive-figure { margin: 22px 0 26px; }
+  .build + .build { margin-block-start: calc(var(--baseline) * 2); }
+  .build p { text-wrap: pretty; }
 
   .figure-rule {
     display: block;
     width: 52px;
-    margin-bottom: 18px;
     border-top: 1px solid var(--rust);
   }
 
   .archive-number {
-    margin: 0 0 0 -.045em;
     color: var(--rust);
     font-family: var(--display);
-    font-size: clamp(64px, 12.4vw, 118px);
+    font-size: clamp(3.5rem, 2.6rem + 4.5vw, 5.5rem);
     font-weight: 500;
-    line-height: .9;
-    letter-spacing: -.06em;
+    line-height: .82;
+    letter-spacing: -.075em;
     font-variant-numeric: lining-nums tabular-nums;
     font-optical-sizing: auto;
+    text-indent: -.045em;
   }
 
   .archive-plus {
     display: inline-block;
-    margin-left: .08em;
-    font-size: .32em;
+    padding-left: .08em;
     font-weight: 400;
     line-height: 1;
     letter-spacing: 0;
-    vertical-align: .74em;
+    vertical-align: .58em;
+    font-size: .58em;
   }
 
   .archive-figure figcaption {
+    grid-row: 3;
     max-width: 40ch;
-    margin-top: 20px;
     color: var(--muted);
-    font-size: 14px;
-    line-height: 1.5;
+    font-size: calc(var(--step-0) * .875);
     text-wrap: pretty;
   }
 
-  .process { margin-top: clamp(72px, 9vw, 96px); }
-
-  .process h2 { margin-bottom: clamp(22px, 3vw, 28px); }
-
-  .process p { margin: 0; text-wrap: pretty; }
-  .process p + p { margin-top: 18px; }
-
-  .delivery { margin-top: clamp(48px, 6vw, 56px); }
-
-  .delivery h2 {
-    margin-bottom: 18px;
-    font-size: clamp(26px, 2.7vw, 28px);
-  }
-
-  .delivery p { margin: 0; text-wrap: pretty; }
+  .process p { text-wrap: pretty; }
+  .delivery p { text-wrap: pretty; }
 
   .closing {
-    margin-top: clamp(74px, 9vw, 96px);
-    padding-top: clamp(34px, 4.5vw, 42px);
     border-top: 1px solid var(--hairline);
+    padding-block-start: var(--baseline);
   }
 
-  .closing p { margin: 0; text-wrap: pretty; }
+  .closing p { text-wrap: pretty; }
 
   .site-footer {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: baseline;
-    gap: 6px 24px;
-    margin-top: clamp(72px, 8vw, 96px);
+    gap: calc(var(--baseline) * .5) 1.5rem;
+    margin-block-start: calc(var(--baseline) * 2);
     color: var(--muted);
-    font-size: 14px;
-    line-height: 1.5;
+    font-size: calc(var(--step-0) * .875);
   }
 
   .site-footer p { margin: 0; }
   .footer-name { color: var(--ink); font-weight: 600; }
 
   @media (max-width: 480px) {
-    h1 { font-size: 32px; }
-    .archive-number { font-size: 64px; letter-spacing: -.055em; }
     .site-footer { display: block; }
-    .footer-line { margin-top: 4px; }
+    .footer-line { margin-block-start: calc(var(--baseline) * .5); }
+    .archive-figure figcaption,
+    .site-footer { font-size: var(--step-0); }
   }
 
   @media print {
-    @page {
-      size: A4;
-      margin: 18mm 20mm 20mm;
-    }
+    @page { size: A4; margin: 18mm 16mm; }
+
+    .page { padding-block: 0; }
 
     html,
     body {
@@ -269,97 +326,7 @@
       print-color-adjust: exact;
     }
 
-    body {
-      font-size: 10.8pt;
-      line-height: 1.55;
-    }
-
-    .page {
-      width: auto;
-      max-width: none;
-      margin: 0;
-      padding: 0;
-    }
-
     .skip-link { display: none !important; }
-
-    .name { font-size: 9.5pt; }
-
-    .opening h1 {
-      margin-top: 22pt;
-      font-size: 31pt;
-      line-height: 1.06;
-    }
-
-    .intro {
-      margin-top: 12pt;
-      font-size: 10.8pt;
-    }
-
-    .short-rule {
-      width: 48pt;
-      margin-top: 22pt;
-    }
-
-    .what-i-do { padding-top: 16pt; }
-
-    .section h2,
-    .delivery h2 {
-      margin-bottom: 10pt;
-      font-size: 18pt;
-      line-height: 1.15;
-    }
-
-    .services li + li { margin-top: 6pt; }
-
-    .made {
-      margin-top: 28pt;
-      padding-top: 18pt;
-    }
-
-    .made > h2 { margin-bottom: 18pt; }
-
-    .build h3 {
-      margin-bottom: 6pt;
-      font-size: 13.5pt;
-    }
-
-    .build + .build { margin-top: 22pt; }
-
-    .archive-figure { margin: 10pt 0 12pt; }
-
-    .archive-number {
-      font-size: 64pt;
-      line-height: .9;
-    }
-
-    .archive-figure figcaption {
-      margin-top: 9pt;
-      font-size: 9.5pt;
-    }
-
-    .process { margin-top: 28pt; }
-
-    .process p + p { margin-top: 6pt; }
-
-    .delivery {
-      margin-top: 20pt;
-    }
-
-    .delivery h2 {
-      margin-bottom: 8pt;
-      font-size: 16pt;
-    }
-
-    .closing {
-      margin-top: 26pt;
-      padding-top: 18pt;
-    }
-
-    .site-footer {
-      margin-top: 36pt;
-      font-size: 9.5pt;
-    }
 
     h2,
     h3 {
@@ -416,10 +383,10 @@
 
       <article class="build">
         <h3>The archive</h3>
-        <figure class="archive-figure">
+        <figure class="archive-figure bleed">
           <span class="figure-rule" aria-hidden="true"></span>
-          <p class="archive-number">8,700<span class="archive-plus">+</span></p>
-          <figcaption>posts archived across 11 accounts. 2,631 of them are in the largest single account.</figcaption>
+          <p class="archive-number">8,700<sup class="archive-plus">+</sup></p>
+          <figcaption class="rail">posts archived across 11 accounts. 2,631 of them are in the largest single account.</figcaption>
         </figure>
         <p>I pull every post from a creator account, watermark-free, and file it with its caption, hashtags, an SEO title, and a hash for each slide. Every download is checked before it is recorded, so a truncated file is retried rather than marked done. The daily run catches up after a missed day instead of leaving a gap.</p>
       </article>
