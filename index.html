@@ -3,262 +3,460 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Herman O. — Content Operations &amp; Data Pipelines</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Herman O. — content operations and data pipelines</title>
+<meta name="description" content="Herman O. archives, schedules, and publishes content for creators and small teams. Fixed-price work, delivered with the files, the script, a QA note, and a README.">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f6f2ea">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --ink-0:#08090a; --ink-1:#0f1011; --ink-2:#191a1b;
-    --txt-1:#f7f8f8; --txt-2:#d0d6e0; --txt-3:#8a8f98; --txt-4:#62666d;
-    --line:rgba(255,255,255,.08); --line-soft:rgba(255,255,255,.05);
-    --acc:#c8f26a;
-    --sans:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-    --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-    --pad:clamp(20px,4vw,40px);
+  :root {
+    --paper: #f6f2ea;
+    --ink: #1c1a17;
+    --muted: #57514a;
+    --hairline: #d8d0c4;
+    --rust: #8a3324;
+    --display: "Bricolage Grotesque", "Public Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --text: "Public Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{-webkit-text-size-adjust:100%}
-  body{
-    background:var(--ink-0);color:var(--txt-2);
-    font-family:var(--sans);font-size:16px;line-height:1.5;
-    font-feature-settings:"cv01","ss03";-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html {
+    background: var(--paper);
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
   }
-  .wrap{max-width:1120px;margin:0 auto;padding:0 var(--pad)}
-  a{color:var(--acc);text-decoration:none}
-  a:hover{text-decoration:underline;text-underline-offset:3px}
 
-  .mono{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--txt-4)}
-  h1,h2,h3,h4{color:var(--txt-1);font-weight:600;letter-spacing:-.02em}
-  h1{font-size:clamp(31px,5vw,58px);line-height:1.03;letter-spacing:-.035em}
-  h1 em{font-style:normal;color:var(--txt-3)}
-  .lede{font-size:clamp(15px,1.3vw,18px);line-height:1.6;color:var(--txt-3);max-width:64ch;letter-spacing:-.01em;margin-top:22px}
-
-  .hero{position:relative;padding:clamp(52px,8vw,100px) 0 clamp(36px,5vw,60px);border-bottom:1px solid var(--line-soft)}
-  .hero::before{
-    content:"";position:absolute;inset:0;pointer-events:none;
-    background-image:
-      linear-gradient(to right,rgba(255,255,255,.045) 1px,transparent 1px),
-      linear-gradient(to bottom,rgba(255,255,255,.045) 1px,transparent 1px);
-    background-size:88px 88px;
-    -webkit-mask-image:radial-gradient(120% 92% at 18% 0%,#000 0%,transparent 72%);
-    mask-image:radial-gradient(120% 92% at 18% 0%,#000 0%,transparent 72%);
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--text);
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-kerning: normal;
   }
-  .hero .wrap{position:relative}
-  .status{display:inline-flex;align-items:center;gap:9px;margin-bottom:26px;color:var(--txt-3)}
-  .dot{width:6px;height:6px;border-radius:50%;background:var(--acc);box-shadow:0 0 0 3px rgba(200,242,106,.12)}
-  .hero h1{max-width:21ch}
-  .terms{display:flex;flex-wrap:wrap;margin-top:34px;border-top:1px solid var(--line-soft);padding-top:14px;gap:0 22px}
-  .terms div{
-    font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--txt-4);
-    padding-right:22px;border-right:1px solid var(--line-soft)
+
+  ::selection {
+    background: var(--ink);
+    color: var(--paper);
   }
-  .terms div:last-child{border-right:none;padding-right:0}
 
-  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line-soft);border-bottom:1px solid var(--line-soft)}
-  .metric{background:var(--ink-0);padding:26px var(--pad) 24px}
-  .metric b{display:block;font-size:clamp(23px,2.5vw,31px);font-weight:600;color:var(--txt-1);letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
-  .metric span{display:block;margin-top:10px;font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--txt-4);line-height:1.4}
-
-  section{padding:clamp(44px,6vw,78px) 0;border-bottom:1px solid var(--line-soft)}
-  .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:24px;margin-bottom:clamp(26px,3.2vw,40px)}
-  .sec-head h2{font-size:clamp(12px,1.15vw,13px);font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--txt-3);font-family:var(--mono)}
-  .sec-head .n{font-family:var(--mono);font-size:11px;color:var(--txt-4);letter-spacing:.14em}
-
-  .case{display:grid;grid-template-columns:72px minmax(0,1fr);gap:0 28px;padding:clamp(24px,3vw,36px) 0;border-top:1px solid var(--line)}
-  .case:first-of-type{border-top:none;padding-top:0}
-  .case .idx{font-family:var(--mono);font-size:12px;color:var(--acc);letter-spacing:.1em;padding-top:6px}
-  .case h3{font-size:clamp(18px,1.9vw,23px);font-weight:600;letter-spacing:-.02em;line-height:1.26;max-width:36ch}
-  .case .what{margin-top:11px;color:var(--txt-3);max-width:74ch;font-size:15.5px}
-  .spec{margin-top:22px;border-top:1px solid var(--line-soft)}
-  .spec div{display:grid;grid-template-columns:168px minmax(0,1fr);gap:20px;padding:11px 0;border-bottom:1px solid var(--line-soft)}
-  .spec dt{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--txt-4);padding-top:3px}
-  .spec dd{color:var(--txt-2);font-size:15px;line-height:1.55}
-  .spec dd b{color:var(--txt-1);font-weight:600;font-variant-numeric:tabular-nums}
-
-  .note{
-    margin-top:clamp(26px,3vw,38px);padding:20px 22px;background:var(--ink-1);
-    border:1px solid var(--line-soft);border-left:2px solid var(--acc);border-radius:8px;
-    color:var(--txt-3);font-size:14.5px;max-width:78ch;line-height:1.6
+  a {
+    color: inherit;
+    text-decoration-color: var(--hairline);
+    text-decoration-thickness: 1px;
+    text-underline-offset: .18em;
   }
-  .note b{color:var(--txt-1);font-weight:600}
 
-  .cols{display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(28px,4vw,56px)}
-  .item{padding:15px 0;border-bottom:1px solid var(--line-soft)}
-  .item h4{font-size:15.5px;font-weight:600;letter-spacing:-.01em}
-  .item p{font-size:14.5px;color:var(--txt-3);margin-top:5px;line-height:1.55}
+  a:hover { text-decoration-color: currentColor; }
+  a:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
 
-  .ledger{border-top:1px solid var(--line)}
-  .ledger .row{display:grid;grid-template-columns:200px minmax(0,1fr) 92px;gap:20px;padding:13px 0;border-bottom:1px solid var(--line-soft);align-items:baseline}
-  .ledger .row span:first-child{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--txt-4)}
-  .ledger .row span:nth-child(2){color:var(--txt-2);font-size:15px}
-  .ledger .row span:last-child{font-family:var(--mono);font-size:10.5px;color:var(--acc);text-align:right;letter-spacing:.1em}
-
-  .steps{border-top:1px solid var(--line)}
-  .step{display:grid;grid-template-columns:72px minmax(0,1fr);gap:0 28px;padding:20px 0;border-bottom:1px solid var(--line-soft)}
-  .step .n{font-family:var(--mono);font-size:12px;color:var(--txt-4);padding-top:3px}
-  .step h4{font-size:15.5px;font-weight:600;letter-spacing:-.01em}
-  .step p{margin-top:6px;color:var(--txt-3);font-size:14.5px;max-width:72ch;line-height:1.55}
-
-  footer{padding:34px 0 62px;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;align-items:baseline}
-  footer b{color:var(--txt-1);font-weight:600}
-  footer div{font-size:13px;color:var(--txt-4)}
-
-  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-  .hero h1,.lede,.terms{animation:rise .65s cubic-bezier(.22,.61,.36,1) both}
-  .lede{animation-delay:.07s}.terms{animation-delay:.14s}
-  @media(prefers-reduced-motion:reduce){*{animation:none!important}}
-
-  @media(max-width:860px){
-    .metrics{grid-template-columns:1fr 1fr}
-    .metric{padding:22px var(--pad)}
-    .cols{grid-template-columns:1fr}
-    .case{grid-template-columns:40px minmax(0,1fr);gap:0 14px}
-    .step{grid-template-columns:40px minmax(0,1fr);gap:0 14px}
-    .spec div{grid-template-columns:1fr;gap:3px}
-    .ledger .row{grid-template-columns:1fr;gap:3px}
-    .ledger .row span:last-child{text-align:left}
+  .skip-link {
+    position: absolute;
+    top: 0;
+    left: -9999px;
+    padding: 10px 14px;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-decoration: underline;
   }
-  @media(max-width:560px){
-    .terms{flex-direction:column;gap:10px}
-    .terms div{border-right:none;padding-right:0}
+
+  .skip-link:focus { top: 16px; left: 16px; z-index: 10; }
+
+  .page {
+    width: min(680px, calc(100% - 48px));
+    margin-inline: auto;
+    padding: clamp(64px, 9vw, 112px) 0 64px;
+  }
+
+  .name {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--display);
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  h1 {
+    margin: clamp(38px, 6vw, 58px) 0 0;
+    max-width: 100%;
+    font-size: clamp(31px, 6.2vw, 50px);
+    line-height: 1.08;
+    letter-spacing: -.035em;
+    text-wrap: balance;
+    font-optical-sizing: auto;
+  }
+
+  .intro {
+    margin: 26px 0 0;
+    font-size: 17px;
+    line-height: 1.65;
+    text-wrap: pretty;
+  }
+
+  .short-rule {
+    width: 64px;
+    margin: clamp(48px, 6vw, 64px) 0 0;
+    border: 0;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .section h2,
+  .delivery h2 {
+    margin: 0 0 26px;
+    font-size: clamp(26px, 3.1vw, 30px);
+    line-height: 1.18;
+    letter-spacing: -.02em;
+    text-wrap: balance;
+  }
+
+  .what-i-do { padding-top: clamp(28px, 4vw, 36px); }
+
+  .services {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .services li {
+    position: relative;
+    padding-left: 1.45em;
+    text-wrap: pretty;
+  }
+
+  .services li + li { margin-top: 12px; }
+
+  .services li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--muted);
+  }
+
+  .made {
+    margin-top: clamp(76px, 10vw, 104px);
+    padding-top: clamp(30px, 4vw, 40px);
+    border-top: 1px solid var(--hairline);
+  }
+
+  .made > h2 { margin-bottom: clamp(34px, 5vw, 48px); }
+
+  .build h3 {
+    margin: 0 0 14px;
+    font-size: clamp(21px, 2.6vw, 23px);
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -.015em;
+  }
+
+  .build p {
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .build + .build { margin-top: clamp(44px, 6vw, 58px); }
+
+  .archive-figure { margin: 22px 0 26px; }
+
+  .figure-rule {
+    display: block;
+    width: 52px;
+    margin-bottom: 18px;
+    border-top: 1px solid var(--rust);
+  }
+
+  .archive-number {
+    margin: 0 0 0 -.045em;
+    color: var(--rust);
+    font-family: var(--display);
+    font-size: clamp(64px, 12.4vw, 118px);
+    font-weight: 500;
+    line-height: .9;
+    letter-spacing: -.06em;
+    font-variant-numeric: lining-nums tabular-nums;
+    font-optical-sizing: auto;
+  }
+
+  .archive-plus {
+    display: inline-block;
+    margin-left: .08em;
+    font-size: .32em;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0;
+    vertical-align: .74em;
+  }
+
+  .archive-figure figcaption {
+    max-width: 40ch;
+    margin-top: 20px;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  .process { margin-top: clamp(72px, 9vw, 96px); }
+
+  .process h2 { margin-bottom: clamp(22px, 3vw, 28px); }
+
+  .process p { margin: 0; text-wrap: pretty; }
+  .process p + p { margin-top: 18px; }
+
+  .delivery { margin-top: clamp(48px, 6vw, 56px); }
+
+  .delivery h2 {
+    margin-bottom: 18px;
+    font-size: clamp(26px, 2.7vw, 28px);
+  }
+
+  .delivery p { margin: 0; text-wrap: pretty; }
+
+  .closing {
+    margin-top: clamp(74px, 9vw, 96px);
+    padding-top: clamp(34px, 4.5vw, 42px);
+    border-top: 1px solid var(--hairline);
+  }
+
+  .closing p { margin: 0; text-wrap: pretty; }
+
+  .site-footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 6px 24px;
+    margin-top: clamp(72px, 8vw, 96px);
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .site-footer p { margin: 0; }
+  .footer-name { color: var(--ink); font-weight: 600; }
+
+  @media (max-width: 480px) {
+    h1 { font-size: 32px; }
+    .archive-number { font-size: 64px; letter-spacing: -.055em; }
+    .site-footer { display: block; }
+    .footer-line { margin-top: 4px; }
+  }
+
+  @media print {
+    @page {
+      size: A4;
+      margin: 18mm 20mm 20mm;
+    }
+
+    html,
+    body {
+      background: var(--paper) !important;
+      color: var(--ink) !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      font-size: 10.8pt;
+      line-height: 1.55;
+    }
+
+    .page {
+      width: auto;
+      max-width: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .skip-link { display: none !important; }
+
+    .name { font-size: 9.5pt; }
+
+    .opening h1 {
+      margin-top: 22pt;
+      font-size: 31pt;
+      line-height: 1.06;
+    }
+
+    .intro {
+      margin-top: 12pt;
+      font-size: 10.8pt;
+    }
+
+    .short-rule {
+      width: 48pt;
+      margin-top: 22pt;
+    }
+
+    .what-i-do { padding-top: 16pt; }
+
+    .section h2,
+    .delivery h2 {
+      margin-bottom: 10pt;
+      font-size: 18pt;
+      line-height: 1.15;
+    }
+
+    .services li + li { margin-top: 6pt; }
+
+    .made {
+      margin-top: 28pt;
+      padding-top: 18pt;
+    }
+
+    .made > h2 { margin-bottom: 18pt; }
+
+    .build h3 {
+      margin-bottom: 6pt;
+      font-size: 13.5pt;
+    }
+
+    .build + .build { margin-top: 22pt; }
+
+    .archive-figure { margin: 10pt 0 12pt; }
+
+    .archive-number {
+      font-size: 64pt;
+      line-height: .9;
+    }
+
+    .archive-figure figcaption {
+      margin-top: 9pt;
+      font-size: 9.5pt;
+    }
+
+    .process { margin-top: 28pt; }
+
+    .process p + p { margin-top: 6pt; }
+
+    .delivery {
+      margin-top: 20pt;
+    }
+
+    .delivery h2 {
+      margin-bottom: 8pt;
+      font-size: 16pt;
+    }
+
+    .closing {
+      margin-top: 26pt;
+      padding-top: 18pt;
+    }
+
+    .site-footer {
+      margin-top: 36pt;
+      font-size: 9.5pt;
+    }
+
+    h2,
+    h3 {
+      break-after: avoid;
+    }
+
+    .opening,
+    .build,
+    .archive-figure,
+    .site-footer {
+      break-inside: avoid;
+    }
+
+    p,
+    li {
+      orphans: 3;
+      widows: 3;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
   }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to the text</a>
 
-<header class="hero">
-  <div class="wrap">
-    <div class="status mono"><span class="dot"></span> available · fixed price · async</div>
-    <h1>I build the pipelines that move content and data at volume.<br><em>Fixed price. Fixed date. No calls.</em></h1>
-    <p class="lede">
-      Archive it, extract it, cut it, publish it — on a schedule, with a verification pass that refuses
-      to record a broken file as done. You get the output, the script that produced it, and a note
-      saying exactly what was checked.
-    </p>
-    <div class="terms">
-      <div>11 accounts in production</div>
-      <div>daily scheduled runs</div>
-      <div>API publishing only</div>
-      <div>delivery verified, not assumed</div>
+<div class="page">
+  <main id="main">
+    <header class="opening">
+      <p class="name">Herman O.</p>
+      <h1>I archive, schedule, and publish other people’s content.</h1>
+      <p class="intro">Most of my work is for creators and small teams with more posts, files, or pages than they can keep track of by hand. I build the tools that handle the repetitive part, then hand over the output, the scripts, and a note saying what I checked.</p>
+    </header>
+
+    <hr class="short-rule">
+
+    <section class="section what-i-do" aria-labelledby="what-i-do">
+      <h2 id="what-i-do">What I do</h2>
+      <ul class="services" role="list">
+        <li>I pull sites, catalogues, and whole creator accounts into clean CSV, XLSX, or a folder tree that makes sense.</li>
+        <li>I download and file bulk video and carousels, with their captions, hashtags, and a check that every file actually opens.</li>
+        <li>I transcribe audio and cut long video into short clips, with subtitles as SRT or burned into the frame.</li>
+        <li>I schedule and publish to Instagram and Pinterest through their official APIs, and keep a record of what went out and what failed.</li>
+        <li>I clean, merge, and reshape spreadsheets at volume, including PDF and JSON that need to become a workbook.</li>
+        <li>I build static sites from structured files, deploy them, and leave the source and a README behind.</li>
+      </ul>
+    </section>
+
+    <section class="section made" aria-labelledby="three-things">
+      <h2 id="three-things">Three things I’ve built</h2>
+
+      <article class="build">
+        <h3>The archive</h3>
+        <figure class="archive-figure">
+          <span class="figure-rule" aria-hidden="true"></span>
+          <p class="archive-number">8,700<span class="archive-plus">+</span></p>
+          <figcaption>posts archived across 11 accounts. 2,631 of them are in the largest single account.</figcaption>
+        </figure>
+        <p>I pull every post from a creator account, watermark-free, and file it with its caption, hashtags, an SEO title, and a hash for each slide. Every download is checked before it is recorded, so a truncated file is retried rather than marked done. The daily run catches up after a missed day instead of leaving a gap.</p>
+      </article>
+
+      <article class="build">
+        <h3>Publishing lanes</h3>
+        <p>I keep a content library moving on Instagram and Pinterest through their official APIs, on a schedule set in advance. Each run leaves a record of what posted, what failed, and what is waiting to try again. Platform limits are built into the schedule instead of discovered when a post is rejected.</p>
+      </article>
+
+      <article class="build">
+        <h3>Site builds</h3>
+        <p>I build static sites from structured files, so the words and images live somewhere you can read and edit. One build step turns them into pages, and one command deploys them. I hand over the source and a README, so changing a line of copy doesn’t need a CMS or me.</p>
+      </article>
+    </section>
+
+    <section class="section process" aria-labelledby="how-a-job-goes">
+      <h2 id="how-a-job-goes">How a job goes</h2>
+      <p>Send a written brief with the output you need, roughly how many items, and the format. If you have a sample of what the finished thing should look like, send that too.</p>
+      <p>I reply with a fixed price and a date. If something in the brief could change either, I ask before quoting, not after the work starts.</p>
+      <p>On anything beyond a small job, we start with one item as a paid sample. If it isn’t right, you stop there and you have only paid for the sample.</p>
+      <p>Then I run the batch and hand it over in one folder. If a source changes later and the script breaks, fixing it is part of the job, not a new invoice.</p>
+    </section>
+
+    <section class="section delivery" aria-labelledby="what-you-get">
+      <h2 id="what-you-get">What you get, every time</h2>
+      <p>Every delivery includes the files in the format you asked for, the script that produced them, a QA note with row counts and anything rejected or missing, and a README in plain English. I don’t ask for calls or screen shares at any point, from brief to handover.</p>
+    </section>
+
+    <div class="closing">
+      <p>I’m new to Upwork, so I don’t have testimonials to show you yet. Instead, I’ll do one small item as a paid sample before you commit to a batch. If it isn’t right, you stop there and you’ve only paid for the sample.</p>
     </div>
-  </div>
-</header>
+  </main>
 
-<div class="wrap">
-  <div class="metrics">
-    <div class="metric"><b>8,700+</b><span>posts archived</span></div>
-    <div class="metric"><b>11</b><span>creator accounts</span></div>
-    <div class="metric"><b>2,631</b><span>largest single account</span></div>
-    <div class="metric"><b>0</b><span>broken files logged as done</span></div>
-  </div>
-</div>
-
-<section>
-  <div class="wrap">
-    <div class="sec-head"><h2>Selected work</h2><span class="n">01 — 03</span></div>
-
-    <article class="case">
-      <div class="idx">01</div>
-      <div>
-        <h3>Bulk creator archive — 8,700+ posts across 11 accounts</h3>
-        <p class="what">A pipeline that pulls every post from a creator account: video and photo carousels,
-          watermark-free, each post filed with its caption, hashtags, an SEO title and per-slide hashes.</p>
-        <dl class="spec">
-          <div><dt>Scale</dt><dd><b>8,700+</b> posts · <b>11</b> accounts · <b>2,631</b> in the largest — one codebase, per-account config</dd></div>
-          <div><dt>Validation</dt><dd>Every file checked for a valid container and readable streams before it is recorded. Truncated downloads are rejected and retried, never logged as complete.</dd></div>
-          <div><dt>Uptime</dt><dd>Daily schedule plus a watchdog that catches any run missed while the machine was offline.</dd></div>
-        </dl>
-      </div>
-    </article>
-
-    <article class="case">
-      <div class="idx">02</div>
-      <div>
-        <h3>Publishing lanes — Instagram and Pinterest through their own APIs</h3>
-        <p class="what">A content library scheduled and published on a fixed daily cadence through the official
-          APIs, with a ledger that records what actually went out against what was planned.</p>
-        <dl class="spec">
-          <div><dt>Method</dt><dd>Official APIs only — no browser automation, no third-party posting tools, no account sharing.</dd></div>
-          <div><dt>Limits</dt><dd>Per-platform caps respected by design, rather than discovered by getting blocked.</dd></div>
-          <div><dt>Reporting</dt><dd>Retry queue for failures, and a daily report that names them instead of hiding them.</dd></div>
-        </dl>
-      </div>
-    </article>
-
-    <article class="case">
-      <div class="idx">03</div>
-      <div>
-        <h3>Site build and deploy — structured content in, production out</h3>
-        <p class="what">A static site where the content lives in structured files, a build step renders the pages,
-          and one command pushes to production. Handed over with source and a README.</p>
-        <dl class="spec">
-          <div><dt>Stack</dt><dd>Structured content, static build, one-command deploy. No CMS licence, no plugin maintenance.</dd></div>
-          <div><dt>Handover</dt><dd>The owner edits a file and runs one command — no developer needed for copy changes.</dd></div>
-          <div><dt>Proof</dt><dd>Verified live in production, with the source in a repository you keep.</dd></div>
-        </dl>
-      </div>
-    </article>
-
-    <div class="note">
-      <b>What this work is.</b> These are systems I built and operate myself. I am new to Upwork and
-      I'm not going to invent clients I don't have — so the first thing I offer is a small paid sample
-      on one item, priced low, before you commit to a batch.
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <div class="sec-head"><h2>What I take on</h2><span class="n">scope</span></div>
-    <div class="cols">
-      <div>
-        <div class="item"><h4>Scraping &amp; extraction</h4><p>Sites, directories and catalogues into clean CSV or XLSX — with the script, so you can re-run it next month.</p></div>
-        <div class="item"><h4>Bulk video &amp; carousels</h4><p>Download, index, transcribe and file by post, each one carrying its own metadata.</p></div>
-        <div class="item"><h4>Repurposing</h4><p>Long video into clips: the cuts, 9:16 or 1:1, captions burned in.</p></div>
-        <div class="item"><h4>Subtitles</h4><p>Transcribed and timed — an SRT file, or burned into the frame.</p></div>
-      </div>
-      <div>
-        <div class="item"><h4>API publishing</h4><p>Pinterest, Instagram and WordPress on a schedule you set, with a record of every post.</p></div>
-        <div class="item"><h4>Spreadsheet work</h4><p>Cleaning, merging, deduping and reformatting at volume — including PDF and JSON into a workbook.</p></div>
-        <div class="item"><h4>Sites &amp; landing pages</h4><p>Built, deployed and handed over with the source.</p></div>
-        <div class="item"><h4>Documents</h4><p>PDF, carousel and deck generation from structured data.</p></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <div class="sec-head"><h2>Every delivery includes</h2><span class="n">no exceptions</span></div>
-    <div class="ledger">
-      <div class="row"><span>The output</span><span>The files themselves, in the format you asked for</span><span>included</span></div>
-      <div class="row"><span>The script</span><span>So the same job can be re-run without paying for it twice</span><span>included</span></div>
-      <div class="row"><span>The QA note</span><span>Row counts, what was rejected, what was missing, and why</span><span>included</span></div>
-      <div class="row"><span>The README</span><span>Plain English: what this is, how to run it, what it assumes</span><span>included</span></div>
-      <div class="row"><span>Calls and screen shares</span><span>Not required at any point, from brief to handover</span><span>never</span></div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <div class="sec-head"><h2>How I work</h2><span class="n">process</span></div>
-    <div class="steps">
-      <div class="step"><div class="n">→</div><div><h4>You send a written brief</h4><p>What the output is, how many items, what format. A sample of the target output beats a paragraph describing it.</p></div></div>
-      <div class="step"><div class="n">→</div><div><h4>I quote a fixed price and a date</h4><p>Not a range. If an ambiguity would change the price, you get the question in my first message — not a change order later.</p></div></div>
-      <div class="step"><div class="n">→</div><div><h4>One item as a paid sample</h4><p>Delivered before the full batch is funded. If the quality isn't what you need, we stop there and you've lost the price of one item.</p></div></div>
-      <div class="step"><div class="n">→</div><div><h4>Delivery and handover</h4><p>Files, script, QA note and README in one place. If the source changes and the script breaks, I fix it — that's part of the job, not a new invoice.</p></div></div>
-    </div>
-  </div>
-</section>
-
-<div class="wrap">
-  <footer>
-    <div><b>Herman O.</b> — content operations &amp; data pipelines</div>
-    <div>Available on Upwork · fixed price · async delivery</div>
+  <footer class="site-footer">
+    <p class="footer-name">Herman O.</p>
+    <p class="footer-line">Content operations and data pipelines. Available on Upwork.</p>
   </footer>
 </div>
-
 </body>
 </html>
